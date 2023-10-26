@@ -10,10 +10,7 @@ step "create-deployment" {
             Octopus.Action.Kubernetes.DeploymentTimeout = "180"
             Octopus.Action.Kubernetes.ResourceStatusCheck = "True"
             Octopus.Action.KubernetesContainers.CustomResourceYamlFileName = "deployment.yml"
-            Octopus.Action.Package.DownloadOnTentacle = "False"
-            Octopus.Action.Package.FeedId = "octopus-server-built-in"
-            Octopus.Action.Package.PackageId = "Octopub.Audits"
-            Octopus.Action.Script.ScriptSource = "Package"
+            Octopus.Action.Script.ScriptSource = "GitRepository"
             OctopusUseBundledTooling = "False"
         }
         worker_pool = "hosted-ubuntu"
@@ -23,13 +20,12 @@ step "create-deployment" {
             image = "#{Platform.WorkerImage.K8s}"
         }
 
-        packages {
-            acquisition_location = "Server"
-            feed = "octopus-server-built-in"
-            package_id = "Octopub.Audits"
-            properties = {
-                SelectionMode = "immediate"
-            }
+        git_dependencies {
+            default_branch = "main"
+            file_path_filters = ["deployment.yml"]
+            git_credential_id = "GitCredentials-1301"
+            git_credential_type = "Library"
+            repository_uri = "https://github.com/ryanrousseau/octopub-audits.git"
         }
     }
 }
@@ -46,10 +42,7 @@ step "create-service" {
             Octopus.Action.Kubernetes.DeploymentTimeout = "180"
             Octopus.Action.Kubernetes.ResourceStatusCheck = "True"
             Octopus.Action.KubernetesContainers.CustomResourceYamlFileName = "service.yml"
-            Octopus.Action.Package.DownloadOnTentacle = "False"
-            Octopus.Action.Package.FeedId = "octopus-server-built-in"
-            Octopus.Action.Package.PackageId = "Octopub.Audits"
-            Octopus.Action.Script.ScriptSource = "Package"
+            Octopus.Action.Script.ScriptSource = "GitRepository"
             OctopusUseBundledTooling = "False"
         }
         worker_pool = "hosted-ubuntu"
@@ -59,13 +52,12 @@ step "create-service" {
             image = "#{Platform.WorkerImage.K8s}"
         }
 
-        packages {
-            acquisition_location = "Server"
-            feed = "octopus-server-built-in"
-            package_id = "Octopub.Audits"
-            properties = {
-                SelectionMode = "immediate"
-            }
+        git_dependencies {
+            default_branch = "main"
+            file_path_filters = ["service.yml"]
+            git_credential_id = "GitCredentials-1301"
+            git_credential_type = "Library"
+            repository_uri = "https://github.com/ryanrousseau/octopub-audits.git"
         }
     }
 }
@@ -82,10 +74,7 @@ step "deploy-ingress" {
             Octopus.Action.Kubernetes.DeploymentTimeout = "180"
             Octopus.Action.Kubernetes.ResourceStatusCheck = "True"
             Octopus.Action.KubernetesContainers.CustomResourceYamlFileName = "ingress.yml"
-            Octopus.Action.Package.DownloadOnTentacle = "False"
-            Octopus.Action.Package.FeedId = "octopus-server-built-in"
-            Octopus.Action.Package.PackageId = "Octopub.Audits"
-            Octopus.Action.Script.ScriptSource = "Package"
+            Octopus.Action.Script.ScriptSource = "GitRepository"
             OctopusUseBundledTooling = "False"
         }
         worker_pool = "hosted-ubuntu"
@@ -95,13 +84,12 @@ step "deploy-ingress" {
             image = "#{Platform.WorkerImage.K8s}"
         }
 
-        packages {
-            acquisition_location = "Server"
-            feed = "octopus-server-built-in"
-            package_id = "Octopub.Audits"
-            properties = {
-                SelectionMode = "immediate"
-            }
+        git_dependencies {
+            default_branch = "main"
+            file_path_filters = ["ingress.yml"]
+            git_credential_id = "GitCredentials-1301"
+            git_credential_type = "Library"
+            repository_uri = "https://github.com/ryanrousseau/octopub-audits.git"
         }
     }
 }
