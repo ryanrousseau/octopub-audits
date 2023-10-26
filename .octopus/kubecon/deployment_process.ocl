@@ -1,0 +1,107 @@
+step "create-deployment" {
+    name = "Create deployment"
+    properties = {
+        Octopus.Action.TargetRoles = "octopub"
+    }
+
+    action {
+        action_type = "Octopus.KubernetesDeployRawYaml"
+        properties = {
+            Octopus.Action.Kubernetes.DeploymentTimeout = "180"
+            Octopus.Action.Kubernetes.ResourceStatusCheck = "True"
+            Octopus.Action.KubernetesContainers.CustomResourceYamlFileName = "deployment.yml"
+            Octopus.Action.Package.DownloadOnTentacle = "False"
+            Octopus.Action.Package.FeedId = "octopus-server-built-in"
+            Octopus.Action.Package.PackageId = "Octopub.Audits"
+            Octopus.Action.Script.ScriptSource = "Package"
+            OctopusUseBundledTooling = "False"
+        }
+        worker_pool = "hosted-ubuntu"
+
+        container {
+            feed = "docker-hub"
+            image = "#{Platform.WorkerImage.K8s}"
+        }
+
+        packages {
+            acquisition_location = "Server"
+            feed = "octopus-server-built-in"
+            package_id = "Octopub.Audits"
+            properties = {
+                SelectionMode = "immediate"
+            }
+        }
+    }
+}
+
+step "create-service" {
+    name = "Create service"
+    properties = {
+        Octopus.Action.TargetRoles = "octopub"
+    }
+
+    action {
+        action_type = "Octopus.KubernetesDeployRawYaml"
+        properties = {
+            Octopus.Action.Kubernetes.DeploymentTimeout = "180"
+            Octopus.Action.Kubernetes.ResourceStatusCheck = "True"
+            Octopus.Action.KubernetesContainers.CustomResourceYamlFileName = "service.yml"
+            Octopus.Action.Package.DownloadOnTentacle = "False"
+            Octopus.Action.Package.FeedId = "octopus-server-built-in"
+            Octopus.Action.Package.PackageId = "Octopub.Audits"
+            Octopus.Action.Script.ScriptSource = "Package"
+            OctopusUseBundledTooling = "False"
+        }
+        worker_pool = "hosted-ubuntu"
+
+        container {
+            feed = "docker-hub"
+            image = "#{Platform.WorkerImage.K8s}"
+        }
+
+        packages {
+            acquisition_location = "Server"
+            feed = "octopus-server-built-in"
+            package_id = "Octopub.Audits"
+            properties = {
+                SelectionMode = "immediate"
+            }
+        }
+    }
+}
+
+step "deploy-ingress" {
+    name = "Deploy ingress"
+    properties = {
+        Octopus.Action.TargetRoles = "octopub"
+    }
+
+    action {
+        action_type = "Octopus.KubernetesDeployRawYaml"
+        properties = {
+            Octopus.Action.Kubernetes.DeploymentTimeout = "180"
+            Octopus.Action.Kubernetes.ResourceStatusCheck = "True"
+            Octopus.Action.KubernetesContainers.CustomResourceYamlFileName = "ingress.yml"
+            Octopus.Action.Package.DownloadOnTentacle = "False"
+            Octopus.Action.Package.FeedId = "octopus-server-built-in"
+            Octopus.Action.Package.PackageId = "Octopub.Audits"
+            Octopus.Action.Script.ScriptSource = "Package"
+            OctopusUseBundledTooling = "False"
+        }
+        worker_pool = "hosted-ubuntu"
+
+        container {
+            feed = "docker-hub"
+            image = "#{Platform.WorkerImage.K8s}"
+        }
+
+        packages {
+            acquisition_location = "Server"
+            feed = "octopus-server-built-in"
+            package_id = "Octopub.Audits"
+            properties = {
+                SelectionMode = "immediate"
+            }
+        }
+    }
+}
